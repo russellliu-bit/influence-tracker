@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brand Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">Brand Intelligence Console</p>
+        <h1>Influence Tracker</h1>
+        <p class="subtitle">
+          搜索品牌关键词与话题标签，聚合 Google + 社媒帖子，统一在卡片流里追踪热度。
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn ghost" id="openSettings">Settings</button>
+        <button class="btn accent" id="exportCsv">Export CSV</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="search-panel">
+        <div class="input-group">
+          <label for="keyword">关键词 / Hashtag</label>
+          <input
+            id="keyword"
+            type="text"
+            placeholder="例如: REDMAGIC, #launch, #tech"
+            autocomplete="off"
+          />
+        </div>
+        <div class="input-group">
+          <label for="limit">抓取数量</label>
+          <input id="limit" type="number" value="30" min="5" max="50" />
+        </div>
+        <div class="input-group">
+          <label>站点过滤</label>
+          <div class="site-filters">
+            <label><input type="checkbox" value="youtube" checked />YouTube</label>
+            <label><input type="checkbox" value="instagram" />Instagram</label>
+            <label><input type="checkbox" value="x" />Twitter/X</label>
+            <label><input type="checkbox" value="threads" />Threads</label>
+            <label><input type="checkbox" value="tiktok" />TikTok</label>
+            <label><input type="checkbox" value="news" />News</label>
+            <label><input type="checkbox" value="pr" />PR</label>
+          </div>
+        </div>
+        <button class="btn primary" id="runSearch">Search</button>
+      </section>
+
+      <section class="advanced-filters">
+        <div class="input-group">
+          <label for="countryGl">Country (gl)</label>
+          <select id="countryGl">
+            <option value="">Any</option>
+            <option value="us" selected>United States</option>
+            <option value="uk">United Kingdom</option>
+            <option value="ca">Canada</option>
+            <option value="au">Australia</option>
+            <option value="de">Germany</option>
+            <option value="fr">France</option>
+            <option value="es">Spain</option>
+            <option value="it">Italy</option>
+            <option value="nl">Netherlands</option>
+            <option value="jp">Japan</option>
+            <option value="kr">South Korea</option>
+            <option value="sg">Singapore</option>
+            <option value="in">India</option>
+            <option value="br">Brazil</option>
+            <option value="mx">Mexico</option>
+            <option value="id">Indonesia</option>
+            <option value="ph">Philippines</option>
+            <option value="vn">Vietnam</option>
+            <option value="th">Thailand</option>
+            <option value="ae">United Arab Emirates</option>
+            <option value="sa">Saudi Arabia</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="languageHl">Language (hl)</label>
+          <select id="languageHl">
+            <option value="">Any</option>
+            <option value="en" selected>English</option>
+            <option value="zh-cn">Chinese Simplified</option>
+            <option value="zh-tw">Chinese Traditional</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="es">Spanish</option>
+            <option value="pt">Portuguese</option>
+            <option value="it">Italian</option>
+            <option value="id">Indonesian</option>
+            <option value="vi">Vietnamese</option>
+            <option value="th">Thai</option>
+            <option value="ar">Arabic</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="dateRange">Date Range (tbs)</label>
+          <select id="dateRange">
+            <option value="">Any time</option>
+            <option value="qdr:h">Past hour</option>
+            <option value="qdr:d">Past 24 hours</option>
+            <option value="qdr:w">Past week</option>
+            <option value="qdr:m">Past month</option>
+            <option value="qdr:y">Past year</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="status-bar" id="statusBar">
+        <div>
+          <span class="status-pill" id="statusState">Idle</span>
+          <span class="status-text" id="statusText">等待搜索</span>
+        </div>
+        <div class="status-meta" id="statusMeta"></div>
+      </section>
+
+      <section class="results">
+        <div class="results-header">
+          <h2>Results</h2>
+          <p id="resultsSummary">暂无数据</p>
+        </div>
+        <div class="results-grid" id="resultsGrid"></div>
+      </section>
+    </main>
+
+    <dialog class="modal" id="settingsModal">
+      <form method="dialog" class="modal-card">
+        <header>
+          <div>
+            <p class="eyebrow">Settings</p>
+            <h3>API 配置</h3>
+          </div>
+          <button class="icon-btn" id="closeSettings" aria-label="Close">
+            ✕
+          </button>
+        </header>
+        <div class="modal-body">
+          <div class="input-group">
+            <label for="actorId">Actor ID</label>
+            <input id="actorId" type="text" placeholder="自定义 Actor ID" />
+          </div>
+          <div class="input-group">
+            <label for="serperApi">Serper API Key</label>
+            <input id="serperApi" type="password" placeholder="用于 Google 搜索" />
+          </div>
+          <div class="input-group">
+            <label for="geminiApi">Gemini API Key</label>
+            <input id="geminiApi" type="password" placeholder="URL Context 爬虫" />
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="source-grid">
+            <div class="source-card">
+              <h4>X / Threads</h4>
+              <div class="input-group">
+                <label for="xEndpoint">API Endpoint</label>
+                <input
+                  id="xEndpoint"
+                  type="text"
+                  value="https://nexus-data-api.fastgrowth.app/v1/kol/performance/enrichment"
+                />
+              </div>
+              <div class="input-group">
+                <label for="xAuth">Auth Header</label>
+                <input id="xAuth" type="text" placeholder="authorization: your token" />
+              </div>
+            </div>
+            <div class="source-card">
+              <h4>YouTube / IG / TikTok</h4>
+              <div class="input-group">
+                <label for="ytEndpoint">API Endpoint</label>
+                <input
+                  id="ytEndpoint"
+                  type="text"
+                  value="https://uppapi.fastgrowth.app/kol-performance/api/enrichment"
+                />
+              </div>
+              <div class="input-group">
+                <label for="ytAuth">Auth Header</label>
+                <input id="ytAuth" type="text" placeholder="Authorization: your token" />
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <label class="toggle">
+              <input id="enableGoogle" type="checkbox" checked />
+              <span>启用 Google 搜索</span>
+            </label>
+            <label class="toggle">
+              <input id="enableSocial" type="checkbox" checked />
+              <span>启用社交媒体 enrichment</span>
+            </label>
+          </div>
+
+          <p class="hint">
+            若遇到 CORS 限制，请在 Settings 中配置代理或使用本地反代。
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="api-status" id="apiStatus">
+            <p class="status-title">API 测试结果</p>
+            <div class="status-row">
+              <span>Serper (Google)</span>
+              <span class="status-flag" id="serperStatus">—</span>
+            </div>
+            <div class="status-row">
+              <span>X / Threads</span>
+              <span class="status-flag" id="xStatus">—</span>
+            </div>
+            <div class="status-row">
+              <span>YouTube / IG / TikTok</span>
+              <span class="status-flag" id="ytStatus">—</span>
+            </div>
+            <div class="preset-row">
+              <button class="btn ghost" id="openPreset" type="button">Load Preset</button>
+              <span class="hint">需要口令才能加载预设配置</span>
+            </div>
+            <div class="preset-panel" id="presetPanel" aria-hidden="true">
+              <label for="presetPassphrase">口令</label>
+              <input id="presetPassphrase" type="password" placeholder="输入口令" />
+              <div class="preset-actions">
+                <button class="btn ghost" id="presetCancel" type="button">取消</button>
+                <button class="btn primary" id="presetConfirm" type="button">确认加载</button>
+              </div>
+              <p class="preset-msg" id="presetMsg"></p>
+            </div>
+          </div>
+        </div>
+        <footer>
+          <button class="btn ghost" value="cancel">Cancel</button>
+          <button class="btn ghost" id="testApisBtn" type="button">Test APIs</button>
+          <button class="btn primary" id="saveSettings" value="default">Save</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <template id="cardTemplate">
+      <article class="result-card">
+        <div class="card-media"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="chip"></span>
+            <a class="card-link" target="_blank" rel="noopener">打开原贴</a>
+          </div>
+          <h3 class="card-title"></h3>
+          <p class="card-desc"></p>
+          <div class="card-stats"></div>
+          <div class="card-meta"></div>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
