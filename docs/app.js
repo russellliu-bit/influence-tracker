@@ -23,10 +23,7 @@ const ytStatus = document.getElementById("ytStatus");
 const defaultSettings = {
   actorId: "",
   serperApi: "",
-  geminiApi: "",
-  xEndpoint: "https://nexus-data-api.fastgrowth.app/v1/kol/performance/enrichment",
   xAuth: "",
-  ytEndpoint: "https://uppapi.fastgrowth.app/kol-performance/api/enrichment",
   ytAuth: "",
   enableGoogle: true,
   enableSocial: true,
@@ -48,14 +45,14 @@ const presetPass = "FASTLANE";
 const presetConfig = {
   actorId: "V1",
   serperApi: "9d8f9797336830655da3739459705c4f40266e1d",
-  geminiApi: "AIzaSyBiejasTxtV_7ofDQ41Aqql3LrR9McsGoI",
-  xEndpoint: "https://nexus-data-api.fastgrowth.app/v1/kol/performance/enrichment",
   xAuth: "Bearer 8a3e7f2b-1c9d-4a5f-b8c3-6e9a2d7f1b0c",
-  ytEndpoint: "https://uppapi.fastgrowth.app/kol-performance/api/enrichment",
   ytAuth: "kqt4Rt6yxKRFe8evDx3shLGguV",
   enableGoogle: true,
   enableSocial: true,
 };
+
+const X_ENDPOINT = "https://nexus-data-api.fastgrowth.app/v1/kol/performance/enrichment";
+const YT_ENDPOINT = "https://uppapi.fastgrowth.app/kol-performance/api/enrichment";
 
 const DEFAULT_LIMIT = 12;
 
@@ -323,9 +320,7 @@ async function enrichSocialLinks(links) {
   const results = [];
   for (const link of links) {
     const platform = detectPlatform(link);
-    const endpoint = platform === "x" || platform === "threads"
-      ? currentSettings.xEndpoint
-      : currentSettings.ytEndpoint;
+    const endpoint = platform === "x" || platform === "threads" ? X_ENDPOINT : YT_ENDPOINT;
     const authHeader = platform === "x" || platform === "threads"
       ? currentSettings.xAuth
       : currentSettings.ytAuth;
@@ -639,7 +634,7 @@ async function testSerper() {
 }
 
 async function testX() {
-  if (!currentSettings.xEndpoint || !currentSettings.xAuth) {
+  if (!currentSettings.xAuth) {
     xStatus.textContent = "❌ 未配置";
     return;
   }
@@ -648,7 +643,7 @@ async function testX() {
     payload.actor_id = currentSettings.actorId;
   }
   try {
-    const response = await fetch(currentSettings.xEndpoint, {
+    const response = await fetch(X_ENDPOINT, {
       method: "POST",
       headers: buildAuthHeaders(currentSettings.xAuth),
       body: JSON.stringify(payload),
@@ -660,7 +655,7 @@ async function testX() {
 }
 
 async function testYt() {
-  if (!currentSettings.ytEndpoint || !currentSettings.ytAuth) {
+  if (!currentSettings.ytAuth) {
     ytStatus.textContent = "❌ 未配置";
     return;
   }
@@ -669,7 +664,7 @@ async function testYt() {
     payload.actor_id = currentSettings.actorId;
   }
   try {
-    const response = await fetch(currentSettings.ytEndpoint, {
+    const response = await fetch(YT_ENDPOINT, {
       method: "POST",
       headers: buildAuthHeaders(currentSettings.ytAuth),
       body: JSON.stringify(payload),
@@ -711,11 +706,8 @@ function buildCsv(items, columns) {
 function hydrateSettingsForm() {
   document.getElementById("actorId").value = currentSettings.actorId;
   document.getElementById("serperApi").value = currentSettings.serperApi;
-  document.getElementById("geminiApi").value = currentSettings.geminiApi;
-  document.getElementById("xEndpoint").value = currentSettings.xEndpoint;
-  document.getElementById("xAuth").value = currentSettings.xAuth;
-  document.getElementById("ytEndpoint").value = currentSettings.ytEndpoint;
-  document.getElementById("ytAuth").value = currentSettings.ytAuth;
+  document.getElementById("xAuth").value = currentSettings.xAuth ? "****" : "";
+  document.getElementById("ytAuth").value = currentSettings.ytAuth ? "****" : "";
   document.getElementById("enableGoogle").checked = currentSettings.enableGoogle;
   document.getElementById("enableSocial").checked = currentSettings.enableSocial;
 }
@@ -779,14 +771,14 @@ function readFiltersFromUI() {
 }
 
 function readSettingsForm() {
+  const xAuthInput = document.getElementById("xAuth").value.trim();
+  const ytAuthInput = document.getElementById("ytAuth").value.trim();
+
   return {
     actorId: document.getElementById("actorId").value.trim(),
     serperApi: document.getElementById("serperApi").value.trim(),
-    geminiApi: document.getElementById("geminiApi").value.trim(),
-    xEndpoint: document.getElementById("xEndpoint").value.trim(),
-    xAuth: document.getElementById("xAuth").value.trim(),
-    ytEndpoint: document.getElementById("ytEndpoint").value.trim(),
-    ytAuth: document.getElementById("ytAuth").value.trim(),
+    xAuth: xAuthInput === "****" ? currentSettings.xAuth : xAuthInput,
+    ytAuth: ytAuthInput === "****" ? currentSettings.ytAuth : ytAuthInput,
     enableGoogle: document.getElementById("enableGoogle").checked,
     enableSocial: document.getElementById("enableSocial").checked,
   };

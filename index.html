@@ -156,10 +156,6 @@
             <label for="serperApi">Serper API Key</label>
             <input id="serperApi" type="password" placeholder="用于 Google 搜索" />
           </div>
-          <div class="input-group">
-            <label for="geminiApi">Gemini API Key</label>
-            <input id="geminiApi" type="password" placeholder="URL Context 爬虫" />
-          </div>
 
           <div class="divider"></div>
 
@@ -167,31 +163,23 @@
             <div class="source-card">
               <h4>X / Threads</h4>
               <div class="input-group">
-                <label for="xEndpoint">API Endpoint</label>
-                <input
-                  id="xEndpoint"
-                  type="text"
-                  value="https://nexus-data-api.fastgrowth.app/v1/kol/performance/enrichment"
-                />
-              </div>
-              <div class="input-group">
                 <label for="xAuth">Auth Header</label>
-                <input id="xAuth" type="text" placeholder="authorization: your token" />
+                <input id="xAuth" type="password" placeholder="****" />
+              </div>
+              <div class="masked-row">
+                <span>API Endpoint</span>
+                <span class="masked-value">****</span>
               </div>
             </div>
             <div class="source-card">
               <h4>YouTube / IG / TikTok</h4>
               <div class="input-group">
-                <label for="ytEndpoint">API Endpoint</label>
-                <input
-                  id="ytEndpoint"
-                  type="text"
-                  value="https://uppapi.fastgrowth.app/kol-performance/api/enrichment"
-                />
-              </div>
-              <div class="input-group">
                 <label for="ytAuth">Auth Header</label>
-                <input id="ytAuth" type="text" placeholder="Authorization: your token" />
+                <input id="ytAuth" type="password" placeholder="****" />
+              </div>
+              <div class="masked-row">
+                <span>API Endpoint</span>
+                <span class="masked-value">****</span>
               </div>
             </div>
           </div>

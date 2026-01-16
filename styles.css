@@ -446,6 +446,19 @@ input:focus {
   background: #faf8f4;
 }
 
+.masked-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.masked-value {
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
 .toggle-row {
   display: flex;
   gap: 16px;
