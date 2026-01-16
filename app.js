@@ -37,7 +37,7 @@ const defaultFilters = {
   gl: "us",
   hl: "en",
   tbs: "",
-  limit: 30,
+  limit: 10,
 };
 
 let currentSettings = loadSettings();
