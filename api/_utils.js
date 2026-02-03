@@ -18,10 +18,11 @@ function parseAuthHeader(value) {
 
 async function proxyJson(req, res, url, headers) {
   try {
+    const payload = req.body ?? (await readJsonBody(req));
     const upstream = await fetch(url, {
       method: "POST",
       headers,
-      body: JSON.stringify(req.body || {}),
+      body: JSON.stringify(payload || {}),
     });
     const text = await upstream.text();
     const contentType = upstream.headers.get("content-type") || "application/json";
@@ -35,4 +36,23 @@ async function proxyJson(req, res, url, headers) {
   }
 }
 
-module.exports = { parseAuthHeader, proxyJson, withCors };
+async function readJsonBody(req) {
+  if (!req || req.method === "GET") return null;
+  return new Promise((resolve, reject) => {
+    let data = "";
+    req.on("data", (chunk) => {
+      data += chunk;
+    });
+    req.on("end", () => {
+      if (!data) return resolve(null);
+      try {
+        resolve(JSON.parse(data));
+      } catch (error) {
+        reject(error);
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+module.exports = { parseAuthHeader, proxyJson, withCors, readJsonBody };
