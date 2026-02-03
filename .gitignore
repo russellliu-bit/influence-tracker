@@ -1,1 +1,3 @@
 keys.env
+.vercel
+.DS_Store
