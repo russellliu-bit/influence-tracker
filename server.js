@@ -1,16 +1,12 @@
-import express from "express";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+const express = require("express");
+const dotenv = require("dotenv");
+const path = require("path");
 
 dotenv.config({ path: "keys.env" });
 
 const SERPER_KEY = process.env.serper_key || "";
 const X_THREADS_KEY = process.env.x_threads_key || "";
 const YT_IG_TIKTOK_KEY = process.env.yt_ig_tiktok_key || "";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json({ limit: "1mb" }));
@@ -27,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 const staticDir = process.env.STATIC_DIR || "docs";
-app.use(express.static(path.join(__dirname, staticDir)));
+app.use(express.static(path.join(process.cwd(), staticDir)));
 
 function parseAuthHeader(value) {
   if (!value) return null;
