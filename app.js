@@ -3,12 +3,6 @@ const openSettingsBtn = document.getElementById("openSettings");
 const closeSettingsBtn = document.getElementById("closeSettings");
 const saveSettingsBtn = document.getElementById("saveSettings");
 const testApisBtn = document.getElementById("testApisBtn");
-const openPresetBtn = document.getElementById("openPreset");
-const presetPanel = document.getElementById("presetPanel");
-const presetPassphrase = document.getElementById("presetPassphrase");
-const presetConfirm = document.getElementById("presetConfirm");
-const presetCancel = document.getElementById("presetCancel");
-const presetMsg = document.getElementById("presetMsg");
 const runSearchBtn = document.getElementById("runSearch");
 const exportCsvBtn = document.getElementById("exportCsv");
 const resultsGrid = document.getElementById("resultsGrid");
@@ -22,9 +16,6 @@ const ytStatus = document.getElementById("ytStatus");
 
 const defaultSettings = {
   actorId: "",
-  serperApi: "",
-  xAuth: "",
-  ytAuth: "",
   enableGoogle: true,
   enableSocial: true,
 };
@@ -41,18 +32,9 @@ let currentSettings = loadSettings();
 let currentResults = [];
 let currentFilters = loadFilters();
 
-const presetPass = "FASTLANE";
-const presetConfig = {
-  actorId: "V1",
-  serperApi: "9d8f9797336830655da3739459705c4f40266e1d",
-  xAuth: "Bearer 8a3e7f2b-1c9d-4a5f-b8c3-6e9a2d7f1b0c",
-  ytAuth: "kqt4Rt6yxKRFe8evDx3shLGguV",
-  enableGoogle: true,
-  enableSocial: true,
-};
-
-const X_ENDPOINT = "https://nexus-data-api.fastgrowth.app/v1/kol/performance/enrichment";
-const YT_ENDPOINT = "https://uppapi.fastgrowth.app/kol-performance/api/enrichment";
+const API_BASE = window.API_BASE || "";
+const X_ENDPOINT = `${API_BASE}/api/enrich/x`;
+const YT_ENDPOINT = `${API_BASE}/api/enrich/yt`;
 
 const DEFAULT_LIMIT = 12;
 
@@ -116,7 +98,7 @@ if (saveSettingsBtn && settingsModal) {
     } else {
       settingsModal.removeAttribute("open");
     }
-    updateStatus("Saved", "已保存 API 配置", "");
+    updateStatus("Saved", "已保存设置", "");
     testApis();
   });
 }
@@ -129,43 +111,6 @@ if (testApisBtn) {
   });
 }
 
-if (openPresetBtn && presetPanel) {
-  openPresetBtn.addEventListener("click", () => {
-    presetPanel.classList.add("is-open");
-    presetPanel.setAttribute("aria-hidden", "false");
-    if (presetPassphrase) presetPassphrase.value = "";
-    if (presetMsg) presetMsg.textContent = "";
-    if (presetPassphrase) presetPassphrase.focus();
-  });
-}
-
-if (presetCancel && presetPanel) {
-  presetCancel.addEventListener("click", () => {
-    presetPanel.classList.remove("is-open");
-    presetPanel.setAttribute("aria-hidden", "true");
-    if (presetMsg) presetMsg.textContent = "";
-  });
-}
-
-if (presetConfirm) {
-  presetConfirm.addEventListener("click", () => {
-    const input = presetPassphrase ? presetPassphrase.value.trim() : "";
-    if (!input) {
-      if (presetMsg) presetMsg.textContent = "请输入口令";
-      return;
-    }
-    if (input !== presetPass) {
-      if (presetMsg) presetMsg.textContent = "口令错误";
-      return;
-    }
-    currentSettings = { ...defaultSettings, ...presetConfig };
-    persistSettings(currentSettings);
-    hydrateSettingsForm();
-    if (presetMsg) presetMsg.textContent = "已加载 ✅";
-    updateStatus("Loaded", "已加载预设配置", "");
-    testApis();
-  });
-}
 
 if (runSearchBtn) {
   runSearchBtn.addEventListener("click", async () => {
@@ -200,7 +145,7 @@ async function runSearch(keyword) {
   resultsGrid.innerHTML = "";
   currentResults = [];
 
-  const enableGoogle = currentSettings.enableGoogle && currentSettings.serperApi;
+  const enableGoogle = currentSettings.enableGoogle;
   const selectedSites = getSelectedSites();
   currentFilters = readFiltersFromUI();
   persistFilters(currentFilters);
@@ -252,13 +197,12 @@ async function runSearch(keyword) {
 }
 
 async function fetchSerper(query, limit, filters) {
-  const endpoint = filters.endpoint || "https://google.serper.dev/search";
+  const endpoint = filters.endpoint || `${API_BASE}/api/serper/search`;
   const resultType = filters.resultType || "web";
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-API-KEY": currentSettings.serperApi,
     },
     body: JSON.stringify({
       q: query,
@@ -296,7 +240,7 @@ async function fetchSerperBySites(keyword, sites) {
         ...filters,
         endpoint:
           entry.site === "news" || entry.site === "pr"
-            ? "https://google.serper.dev/news"
+            ? `${API_BASE}/api/serper/news`
             : undefined,
         resultType: entry.site,
       })
@@ -321,15 +265,9 @@ async function enrichSocialLinks(links) {
   for (const link of links) {
     const platform = detectPlatform(link);
     const endpoint = platform === "x" || platform === "threads" ? X_ENDPOINT : YT_ENDPOINT;
-    const authHeader = platform === "x" || platform === "threads"
-      ? currentSettings.xAuth
-      : currentSettings.ytAuth;
-
     if (!endpoint) {
       continue;
     }
-
-    const headers = buildAuthHeaders(authHeader);
 
     const payload = { post_link: link };
     if (currentSettings.actorId) {
@@ -339,7 +277,7 @@ async function enrichSocialLinks(links) {
     try {
       const response = await fetch(endpoint, {
         method: "POST",
-        headers,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       if (!response.ok) {
@@ -480,18 +418,6 @@ function updateStatus(state, text, meta) {
   statusMeta.textContent = meta;
 }
 
-function parseAuthHeader(value) {
-  if (!value) return null;
-  const index = value.indexOf(":");
-  if (index === -1) {
-    return { key: "Authorization", value };
-  }
-  return {
-    key: value.slice(0, index).trim(),
-    value: value.slice(index + 1).trim(),
-  };
-}
-
 function getSelectedSites() {
   return Array.from(document.querySelectorAll(".site-filters input:checked")).map(
     (input) => input.value
@@ -578,15 +504,6 @@ function getVideoSuffix(hl) {
   return suffixMap[hl] || suffixMap.en;
 }
 
-function buildAuthHeaders(authHeader) {
-  const headers = { "Content-Type": "application/json" };
-  const parsed = parseAuthHeader(authHeader);
-  if (parsed) {
-    headers[parsed.key] = parsed.value;
-  }
-  return headers;
-}
-
 function prioritizeResults(items) {
   return [...items].sort((a, b) => scoreResult(b) - scoreResult(a));
 }
@@ -614,16 +531,15 @@ async function testApis() {
 }
 
 async function testSerper() {
-  if (!currentSettings.serperApi || !currentSettings.enableGoogle) {
+  if (!currentSettings.enableGoogle) {
     serperStatus.textContent = "❌ 未配置";
     return;
   }
   try {
-    const response = await fetch("https://google.serper.dev/search", {
+    const response = await fetch(`${API_BASE}/api/serper/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-API-KEY": currentSettings.serperApi,
       },
       body: JSON.stringify({ q: "test", num: 1 }),
     });
@@ -634,10 +550,6 @@ async function testSerper() {
 }
 
 async function testX() {
-  if (!currentSettings.xAuth) {
-    xStatus.textContent = "❌ 未配置";
-    return;
-  }
   const payload = { post_link: "https://www.threads.com/@tomiokataoka/post/DRnnuIbE1YT" };
   if (currentSettings.actorId) {
     payload.actor_id = currentSettings.actorId;
@@ -645,7 +557,7 @@ async function testX() {
   try {
     const response = await fetch(X_ENDPOINT, {
       method: "POST",
-      headers: buildAuthHeaders(currentSettings.xAuth),
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     xStatus.textContent = response.ok ? "✅ 正常" : "❌ 失败";
@@ -655,10 +567,6 @@ async function testX() {
 }
 
 async function testYt() {
-  if (!currentSettings.ytAuth) {
-    ytStatus.textContent = "❌ 未配置";
-    return;
-  }
   const payload = { post_link: "https://www.instagram.com/reels/DS1fbXvkQXf/" };
   if (currentSettings.actorId) {
     payload.actor_id = currentSettings.actorId;
@@ -666,7 +574,7 @@ async function testYt() {
   try {
     const response = await fetch(YT_ENDPOINT, {
       method: "POST",
-      headers: buildAuthHeaders(currentSettings.ytAuth),
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     ytStatus.textContent = response.ok ? "✅ 正常" : "❌ 失败";
@@ -705,9 +613,6 @@ function buildCsv(items, columns) {
 
 function hydrateSettingsForm() {
   document.getElementById("actorId").value = currentSettings.actorId;
-  document.getElementById("serperApi").value = currentSettings.serperApi;
-  document.getElementById("xAuth").value = currentSettings.xAuth ? "****" : "";
-  document.getElementById("ytAuth").value = currentSettings.ytAuth ? "****" : "";
   document.getElementById("enableGoogle").checked = currentSettings.enableGoogle;
   document.getElementById("enableSocial").checked = currentSettings.enableSocial;
 }
@@ -771,14 +676,8 @@ function readFiltersFromUI() {
 }
 
 function readSettingsForm() {
-  const xAuthInput = document.getElementById("xAuth").value.trim();
-  const ytAuthInput = document.getElementById("ytAuth").value.trim();
-
   return {
     actorId: document.getElementById("actorId").value.trim(),
-    serperApi: document.getElementById("serperApi").value.trim(),
-    xAuth: xAuthInput === "****" ? currentSettings.xAuth : xAuthInput,
-    ytAuth: ytAuthInput === "****" ? currentSettings.ytAuth : ytAuthInput,
     enableGoogle: document.getElementById("enableGoogle").checked,
     enableSocial: document.getElementById("enableSocial").checked,
   };

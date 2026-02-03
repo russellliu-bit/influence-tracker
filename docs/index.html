@@ -11,6 +11,9 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script>
+      window.API_BASE = "";
+    </script>
   </head>
   <body>
     <div class="bg-glow"></div>
@@ -152,37 +155,9 @@
             <label for="actorId">Actor ID</label>
             <input id="actorId" type="text" placeholder="自定义 Actor ID" />
           </div>
-          <div class="input-group">
-            <label for="serperApi">Serper API Key</label>
-            <input id="serperApi" type="password" placeholder="用于 Google 搜索" />
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="source-grid">
-            <div class="source-card">
-              <h4>X / Threads</h4>
-              <div class="input-group">
-                <label for="xAuth">Auth Header</label>
-                <input id="xAuth" type="password" placeholder="****" />
-              </div>
-              <div class="masked-row">
-                <span>API Endpoint</span>
-                <span class="masked-value">****</span>
-              </div>
-            </div>
-            <div class="source-card">
-              <h4>YouTube / IG / TikTok</h4>
-              <div class="input-group">
-                <label for="ytAuth">Auth Header</label>
-                <input id="ytAuth" type="password" placeholder="****" />
-              </div>
-              <div class="masked-row">
-                <span>API Endpoint</span>
-                <span class="masked-value">****</span>
-              </div>
-            </div>
-          </div>
+          <p class="hint">
+            API Key 由服务器端读取 keys.env，本地页面不再保存密钥。
+          </p>
 
           <div class="toggle-row">
             <label class="toggle">
@@ -194,10 +169,6 @@
               <span>启用社交媒体 enrichment</span>
             </label>
           </div>
-
-          <p class="hint">
-            若遇到 CORS 限制，请在 Settings 中配置代理或使用本地反代。
-          </p>
 
           <div class="divider"></div>
 
@@ -214,19 +185,6 @@
             <div class="status-row">
               <span>YouTube / IG / TikTok</span>
               <span class="status-flag" id="ytStatus">—</span>
-            </div>
-            <div class="preset-row">
-              <button class="btn ghost" id="openPreset" type="button">Load Preset</button>
-              <span class="hint">需要口令才能加载预设配置</span>
-            </div>
-            <div class="preset-panel" id="presetPanel" aria-hidden="true">
-              <label for="presetPassphrase">口令</label>
-              <input id="presetPassphrase" type="password" placeholder="输入口令" />
-              <div class="preset-actions">
-                <button class="btn ghost" id="presetCancel" type="button">取消</button>
-                <button class="btn primary" id="presetConfirm" type="button">确认加载</button>
-              </div>
-              <p class="preset-msg" id="presetMsg"></p>
             </div>
           </div>
         </div>

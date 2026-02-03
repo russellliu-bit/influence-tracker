@@ -433,32 +433,6 @@ input:focus {
   margin: 4px 0;
 }
 
-.source-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.source-card {
-  border: 1px solid var(--stroke);
-  padding: 16px;
-  border-radius: 16px;
-  background: #faf8f4;
-}
-
-.masked-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-.masked-value {
-  font-weight: 600;
-  letter-spacing: 0.12em;
-}
-
 .toggle-row {
   display: flex;
   gap: 16px;
@@ -502,39 +476,6 @@ input:focus {
 
 .status-flag {
   font-weight: 600;
-}
-
-.preset-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.preset-panel {
-  display: none;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px dashed var(--stroke);
-  background: #fffaf2;
-}
-
-.preset-panel.is-open {
-  display: grid;
-}
-
-.preset-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.preset-msg {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--muted);
 }
 
 footer {
