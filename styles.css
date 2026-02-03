@@ -1,15 +1,15 @@
 :root {
   color-scheme: light;
-  --bg: #f6f1e8;
-  --bg-deep: #ebe3d6;
-  --ink: #1f1b16;
-  --muted: #6a6156;
-  --accent: #d77b57;
-  --accent-2: #3b7a6a;
-  --card: #fffaf3;
-  --stroke: rgba(31, 27, 22, 0.14);
-  --shadow: 0 18px 36px rgba(20, 18, 12, 0.16);
-  --shadow-soft: 0 10px 24px rgba(20, 18, 12, 0.1);
+  --bg: #fbf7f1;
+  --bg-deep: #f2eadf;
+  --ink: #2a241d;
+  --muted: #7b7266;
+  --accent: #c89172;
+  --accent-2: #5f8a7f;
+  --card: #fffbf5;
+  --stroke: rgba(42, 36, 29, 0.12);
+  --shadow: 0 18px 36px rgba(26, 22, 18, 0.12);
+  --shadow-soft: 0 10px 24px rgba(26, 22, 18, 0.08);
 }
 
 * {
@@ -21,9 +21,9 @@ body {
   font-family: "Archivo", "Noto Sans", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 12% 18%, rgba(215, 123, 87, 0.18), transparent 46%),
-    radial-gradient(circle at 82% 12%, rgba(59, 122, 106, 0.16), transparent 52%),
-    linear-gradient(135deg, #f9f5ee 0%, var(--bg) 55%, #efe6d7 100%);
+    radial-gradient(circle at 12% 18%, rgba(200, 145, 114, 0.12), transparent 46%),
+    radial-gradient(circle at 82% 12%, rgba(95, 138, 127, 0.12), transparent 52%),
+    linear-gradient(135deg, #fcf9f4 0%, var(--bg) 55%, #f1e8db 100%);
   min-height: 100vh;
 }
 
@@ -89,11 +89,11 @@ main {
   grid-template-columns: minmax(240px, 1.2fr) 160px minmax(280px, 1fr) auto;
   gap: 18px;
   align-items: end;
-  background: rgba(255, 250, 243, 0.88);
+  background: rgba(255, 251, 246, 0.9);
   padding: 22px;
   border-radius: 22px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(31, 27, 22, 0.1);
+  border: 1px solid rgba(42, 36, 29, 0.08);
   backdrop-filter: blur(10px);
 }
 
@@ -121,10 +121,10 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-  background: rgba(255, 250, 243, 0.9);
+  background: rgba(255, 251, 246, 0.92);
   padding: 20px;
   border-radius: 20px;
-  border: 1px solid rgba(31, 27, 22, 0.12);
+  border: 1px solid rgba(42, 36, 29, 0.1);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(12px);
 }
@@ -202,13 +202,13 @@ input:focus {
   margin-top: 24px;
   padding: 16px 20px;
   border-radius: 16px;
-  background: rgba(255, 250, 243, 0.86);
+  background: rgba(255, 251, 246, 0.9);
   display: flex;
   justify-content: space-between;
   align-items: center;
   backdrop-filter: blur(10px);
   gap: 16px;
-  border: 1px solid rgba(31, 27, 22, 0.1);
+  border: 1px solid rgba(42, 36, 29, 0.08);
 }
 
 .status-pill {
@@ -264,7 +264,7 @@ input:focus {
   flex-direction: column;
   min-height: 300px;
   animation: fadeInUp 0.6s ease forwards;
-  border: 1px solid rgba(31, 27, 22, 0.1);
+  border: 1px solid rgba(42, 36, 29, 0.1);
 }
 
 .result-card:hover {
@@ -273,7 +273,7 @@ input:focus {
 }
 
 .card-media {
-  background: linear-gradient(135deg, #f4d2c4, #dfece6);
+  background: linear-gradient(135deg, #f2d8ca, #e6f0ec);
   min-height: 140px;
   position: relative;
 }
@@ -363,7 +363,7 @@ input:focus {
 }
 
 .chip {
-  background: #f5ede2;
+  background: #f7f1e7;
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 0.72rem;
@@ -372,19 +372,19 @@ input:focus {
 }
 
 .chip-youtube {
-  background: #ffdcd6;
-  color: #a23b33;
+  background: #f8d8d1;
+  color: #9f4b42;
 }
 
 .chip-instagram {
-  background: linear-gradient(135deg, #f7e8cf, #f1c7f0);
-  color: #6d2a60;
+  background: linear-gradient(135deg, #f5ead6, #efcfe8);
+  color: #6a355f;
 }
 
 .chip-x,
 .chip-twitter {
-  background: #e3f1ee;
-  color: #1d4e45;
+  background: #e6f0ee;
+  color: #2b5b52;
 }
 
 .chip-threads {
@@ -399,13 +399,13 @@ input:focus {
 
 .chip-news,
 .chip-web {
-  background: #efe8dd;
-  color: #5a4634;
+  background: #f0e8dc;
+  color: #5c4a3b;
 }
 
 .chip-pr {
-  background: #ffefd1;
-  color: #7a4a18;
+  background: #f7ead0;
+  color: #7a532c;
 }
 
 .modal {
@@ -476,7 +476,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #fdf7ef;
+  background: #fdf8f1;
   border-radius: 16px;
   padding: 16px;
   border: 1px solid var(--stroke);
