@@ -22,7 +22,7 @@
         <p class="eyebrow">Brand Intelligence Console</p>
         <h1>Influence Tracker</h1>
         <p class="subtitle">
-          搜索品牌关键词与话题标签，聚合 Google + 社媒帖子，统一在卡片流里追踪热度。
+          Search brand keywords and hashtags, aggregate Google + social posts, and track momentum in a unified feed.
         </p>
       </div>
       <div class="hero-actions">
@@ -34,20 +34,20 @@
     <main>
       <section class="search-panel">
         <div class="input-group">
-          <label for="keyword">关键词 / Hashtag</label>
+          <label for="keyword">Keyword / Hashtag</label>
           <input
             id="keyword"
             type="text"
-            placeholder="例如: REDMAGIC, #launch, #tech"
+            placeholder="e.g., REDMAGIC, #launch, #tech"
             autocomplete="off"
           />
         </div>
         <div class="input-group">
-          <label for="limit">抓取数量</label>
+          <label for="limit">Result Limit</label>
           <input id="limit" type="number" value="10" min="5" max="50" />
         </div>
         <div class="input-group">
-          <label>站点过滤</label>
+          <label>Source Filters</label>
           <div class="site-filters">
             <label><input type="checkbox" value="youtube" checked />YouTube</label>
             <label><input type="checkbox" value="instagram" />Instagram</label>
@@ -125,7 +125,7 @@
       <section class="status-bar" id="statusBar">
         <div>
           <span class="status-pill" id="statusState">Idle</span>
-          <span class="status-text" id="statusText">等待搜索</span>
+          <span class="status-text" id="statusText">Waiting to search</span>
         </div>
         <div class="status-meta" id="statusMeta"></div>
       </section>
@@ -133,7 +133,7 @@
       <section class="results">
         <div class="results-header">
           <h2>Results</h2>
-          <p id="resultsSummary">暂无数据</p>
+          <p id="resultsSummary">No data yet</p>
         </div>
         <div class="results-grid" id="resultsGrid"></div>
       </section>
@@ -144,7 +144,7 @@
         <header>
           <div>
             <p class="eyebrow">Settings</p>
-            <h3>API 配置</h3>
+            <h3>API Settings</h3>
           </div>
           <button class="icon-btn" id="closeSettings" aria-label="Close">
             ✕
@@ -153,27 +153,27 @@
         <div class="modal-body">
           <div class="input-group">
             <label for="actorId">Actor ID</label>
-            <input id="actorId" type="text" placeholder="自定义 Actor ID" />
+            <input id="actorId" type="text" placeholder="Custom Actor ID" />
           </div>
           <p class="hint">
-            API Key 由服务器端读取 keys.env，本地页面不再保存密钥。
+            API keys are read on the server from keys.env. This page no longer stores secrets.
           </p>
 
           <div class="toggle-row">
             <label class="toggle">
               <input id="enableGoogle" type="checkbox" checked />
-              <span>启用 Google 搜索</span>
+              <span>Enable Google Search</span>
             </label>
             <label class="toggle">
               <input id="enableSocial" type="checkbox" checked />
-              <span>启用社交媒体 enrichment</span>
+              <span>Enable social enrichment</span>
             </label>
           </div>
 
           <div class="divider"></div>
 
           <div class="api-status" id="apiStatus">
-            <p class="status-title">API 测试结果</p>
+            <p class="status-title">API Test Results</p>
             <div class="status-row">
               <span>Serper (Google)</span>
               <span class="status-flag" id="serperStatus">—</span>
@@ -202,7 +202,7 @@
         <div class="card-body">
           <div class="card-top">
             <span class="chip"></span>
-            <a class="card-link" target="_blank" rel="noopener">打开原贴</a>
+            <a class="card-link" target="_blank" rel="noopener">Open source</a>
           </div>
           <h3 class="card-title"></h3>
           <p class="card-desc"></p>

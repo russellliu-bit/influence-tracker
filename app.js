@@ -98,7 +98,7 @@ if (saveSettingsBtn && settingsModal) {
     } else {
       settingsModal.removeAttribute("open");
     }
-    updateStatus("Saved", "已保存设置", "");
+    updateStatus("Saved", "Settings saved", "");
     testApis();
   });
 }
@@ -116,7 +116,7 @@ if (runSearchBtn) {
   runSearchBtn.addEventListener("click", async () => {
     const keyword = document.getElementById("keyword").value.trim();
     if (!keyword) {
-      updateStatus("Idle", "请输入关键词或 hashtag", "");
+      updateStatus("Idle", "Enter a keyword or hashtag", "");
       return;
     }
     await runSearch(keyword);
@@ -126,7 +126,7 @@ if (runSearchBtn) {
 if (exportCsvBtn) {
   exportCsvBtn.addEventListener("click", () => {
     if (!currentResults.length) {
-      updateStatus("Idle", "暂无可导出的数据", "");
+      updateStatus("Idle", "No data to export", "");
       return;
     }
     const csv = buildCsv(currentResults, fields);
@@ -141,7 +141,7 @@ if (exportCsvBtn) {
 }
 
 async function runSearch(keyword) {
-  updateStatus("Running", "正在抓取数据...", "准备搜索");
+  updateStatus("Running", "Fetching data...", "Preparing search");
   resultsGrid.innerHTML = "";
   currentResults = [];
 
@@ -150,17 +150,17 @@ async function runSearch(keyword) {
   currentFilters = readFiltersFromUI();
   persistFilters(currentFilters);
   if (!selectedSites.length) {
-    updateStatus("Idle", "请选择至少一个站点", "");
+    updateStatus("Idle", "Select at least one source", "");
     return;
   }
 
   let webResults = [];
   if (enableGoogle) {
     try {
-      updateStatus("Running", "正在进行 Serper 搜索...", "平台分流查询");
+      updateStatus("Running", "Running Serper search...", "Querying by source");
       webResults = await fetchSerperBySites(keyword, selectedSites);
     } catch (error) {
-      updateStatus("Warning", "Serper 搜索失败，使用模拟数据", "");
+      updateStatus("Warning", "Serper search failed, using sample data", "");
       webResults = demoWeb(keyword, currentFilters.limit || DEFAULT_LIMIT);
     }
   } else {
@@ -177,8 +177,8 @@ async function runSearch(keyword) {
     if (socialLinks.length) {
       updateStatus(
         "Running",
-        "正在 enrichment 社交媒体链接...",
-        `${socialLinks.length} 条链接`
+        "Enriching social links...",
+        `${socialLinks.length} links`
       );
       enrichedResults = await enrichSocialLinks(socialLinks);
     }
@@ -187,10 +187,10 @@ async function runSearch(keyword) {
   const combined = prioritizeResults(mergeResults(webResults, enrichedResults));
   if (!combined.length) {
     currentResults = demoResults(keyword);
-    updateStatus("Demo", "未获取到真实数据，已展示示例", "");
+    updateStatus("Demo", "No real data found, showing examples", "");
   } else {
     currentResults = combined;
-    updateStatus("Done", "抓取完成", `${combined.length} 条结果`);
+    updateStatus("Done", "Fetch complete", `${combined.length} results`);
   }
 
   renderResults(currentResults);
@@ -289,7 +289,7 @@ async function enrichSocialLinks(links) {
       results.push({
         type: platform,
         link,
-        title: "Enrichment 失败",
+        title: "Enrichment failed",
         description: String(error),
       });
     }
@@ -356,7 +356,7 @@ function renderResults(items) {
     const displayType = formatTypeLabel(item.type || "web");
     chip.textContent = host ? `${displayType} · ${host}` : displayType;
     chip.classList.add(`chip-${slugifyType(item.type || "web")}`);
-    title.textContent = item.title || item.channel_name || "(无标题)";
+    title.textContent = item.title || item.channel_name || "(Untitled)";
     desc.textContent = truncateText(item.description || item.content || "", 160);
     link.href = item.link || "#";
 
@@ -384,25 +384,25 @@ function renderResults(items) {
     resultsGrid.appendChild(card);
   });
 
-  resultsSummary.textContent = `共 ${items.length} 条`;
+  resultsSummary.textContent = `${items.length} results`;
 }
 
 function buildMeta(item) {
   const parts = [];
-  if (item.publish_date) parts.push(`发布: ${item.publish_date}`);
-  if (item.source) parts.push(`来源: ${item.source}`);
-  if (item.channel_name) parts.push(`频道: ${item.channel_name}`);
-  if (item.engagement_rate) parts.push(`互动率: ${item.engagement_rate}`);
+  if (item.publish_date) parts.push(`Published: ${item.publish_date}`);
+  if (item.source) parts.push(`Source: ${item.source}`);
+  if (item.channel_name) parts.push(`Channel: ${item.channel_name}`);
+  if (item.engagement_rate) parts.push(`Engagement: ${item.engagement_rate}`);
   return parts.map((part) => `<span>${escapeHtml(part)}</span>`).join("");
 }
 
 function buildStats(item) {
   const stats = [];
-  if (item.views) stats.push(`浏览 ${item.views}`);
-  if (item.likes) stats.push(`点赞 ${item.likes}`);
-  if (item.comments) stats.push(`评论 ${item.comments}`);
-  if (item.shares) stats.push(`分享 ${item.shares}`);
-  if (item.publish_date) stats.push(`发布 ${item.publish_date}`);
+  if (item.views) stats.push(`Views ${item.views}`);
+  if (item.likes) stats.push(`Likes ${item.likes}`);
+  if (item.comments) stats.push(`Comments ${item.comments}`);
+  if (item.shares) stats.push(`Shares ${item.shares}`);
+  if (item.publish_date) stats.push(`Published ${item.publish_date}`);
   return stats
     .slice(0, 5)
     .map((stat, index) => {
@@ -525,14 +525,14 @@ function truncateText(text, limit) {
 }
 
 async function testApis() {
-  updateStatus("Testing", "正在测试 API...", "");
+  updateStatus("Testing", "Testing APIs...", "");
   await Promise.all([testSerper(), testX(), testYt()]);
-  updateStatus("Saved", "API 测试完成", "");
+  updateStatus("Saved", "API tests complete", "");
 }
 
 async function testSerper() {
   if (!currentSettings.enableGoogle) {
-    serperStatus.textContent = "❌ 未配置";
+    serperStatus.textContent = "❌ Not configured";
     return;
   }
   try {
@@ -543,9 +543,9 @@ async function testSerper() {
       },
       body: JSON.stringify({ q: "test", num: 1 }),
     });
-    serperStatus.textContent = response.ok ? "✅ 正常" : "❌ 失败";
+    serperStatus.textContent = response.ok ? "✅ OK" : "❌ Failed";
   } catch (error) {
-    serperStatus.textContent = "❌ 失败";
+    serperStatus.textContent = "❌ Failed";
   }
 }
 
@@ -560,9 +560,9 @@ async function testX() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    xStatus.textContent = response.ok ? "✅ 正常" : "❌ 失败";
+    xStatus.textContent = response.ok ? "✅ OK" : "❌ Failed";
   } catch (error) {
-    xStatus.textContent = "❌ 失败";
+    xStatus.textContent = "❌ Failed";
   }
 }
 
@@ -577,9 +577,9 @@ async function testYt() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    ytStatus.textContent = response.ok ? "✅ 正常" : "❌ 失败";
+    ytStatus.textContent = response.ok ? "✅ OK" : "❌ Failed";
   } catch (error) {
-    ytStatus.textContent = "❌ 失败";
+    ytStatus.textContent = "❌ Failed";
   }
 }
 
@@ -720,15 +720,15 @@ function demoWeb(keyword, limit) {
     {
       type: "web",
       link: "https://example.com/brand-story",
-      title: `${keyword} 品牌故事与新品介绍`,
-      description: "品牌发布会摘要，包含新品配置与市场反馈。",
+      title: `${keyword} brand story and new launch`,
+      description: "Launch summary with key specs and market reactions.",
       publish_date: new Date().toISOString().slice(0, 10),
     },
     {
       type: "web",
       link: "https://example.com/launch-news",
-      title: `${keyword} Launch 亮点整理`,
-      description: "从媒体视角总结发布亮点与社区评价。",
+      title: `${keyword} launch highlights`,
+      description: "Media roundup of launch highlights and community sentiment.",
       publish_date: new Date().toISOString().slice(0, 10),
     },
   ];
