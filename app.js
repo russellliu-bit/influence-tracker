@@ -487,9 +487,9 @@ function buildSiteQueries(keyword, sites, hl) {
 function getVideoSuffix(hl) {
   const suffixMap = {
     en: '(review OR unboxing OR "hands on" OR "first look")',
-    "zh-cn": "(评测 OR 开箱 OR 上手 OR 首发)",
-    "zh-tw": "(評測 OR 開箱 OR 上手 OR 首發)",
-    ja: "(レビュー OR 開封 OR ハンズオン OR 初見)",
+    "zh-cn": '(review OR unboxing OR "hands on" OR "first look")',
+    "zh-tw": '(review OR unboxing OR "hands on" OR "first look")',
+    ja: '(review OR unboxing OR "hands on" OR "first look")',
     ko: "(리뷰 OR 언박싱 OR 체험기 OR 첫인상)",
     fr: "(test OR déballage OR \"prise en main\" OR \"premières impressions\")",
     de: "(test OR unboxing OR \"hands on\" OR \"erste eindrücke\")",

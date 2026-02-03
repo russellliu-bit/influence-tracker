@@ -1,15 +1,15 @@
 :root {
   color-scheme: light;
-  --bg: #f3efe6;
-  --bg-deep: #e6ddcc;
-  --ink: #1b1a16;
-  --muted: #5c5a54;
-  --accent: #d84c3f;
-  --accent-2: #1f7a6b;
-  --card: #ffffff;
-  --stroke: rgba(27, 26, 22, 0.12);
-  --shadow: 0 18px 36px rgba(20, 18, 12, 0.14);
-  --shadow-soft: 0 10px 24px rgba(20, 18, 12, 0.08);
+  --bg: #f6f1e8;
+  --bg-deep: #ebe3d6;
+  --ink: #1f1b16;
+  --muted: #6a6156;
+  --accent: #d77b57;
+  --accent-2: #3b7a6a;
+  --card: #fffaf3;
+  --stroke: rgba(31, 27, 22, 0.14);
+  --shadow: 0 18px 36px rgba(20, 18, 12, 0.16);
+  --shadow-soft: 0 10px 24px rgba(20, 18, 12, 0.1);
 }
 
 * {
@@ -21,9 +21,9 @@ body {
   font-family: "Archivo", "Noto Sans", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 10% 15%, rgba(216, 76, 63, 0.16), transparent 45%),
-    radial-gradient(circle at 85% 10%, rgba(31, 122, 107, 0.16), transparent 50%),
-    linear-gradient(135deg, #f7f3eb 0%, var(--bg) 55%, #efe6d9 100%);
+    radial-gradient(circle at 12% 18%, rgba(215, 123, 87, 0.18), transparent 46%),
+    radial-gradient(circle at 82% 12%, rgba(59, 122, 106, 0.16), transparent 52%),
+    linear-gradient(135deg, #f9f5ee 0%, var(--bg) 55%, #efe6d7 100%);
   min-height: 100vh;
 }
 
@@ -33,8 +33,8 @@ body {
   background:
     repeating-linear-gradient(
       135deg,
-      rgba(27, 26, 22, 0.02) 0,
-      rgba(27, 26, 22, 0.02) 2px,
+      rgba(31, 27, 22, 0.02) 0,
+      rgba(31, 27, 22, 0.02) 2px,
       transparent 2px,
       transparent 8px
     );
@@ -89,11 +89,11 @@ main {
   grid-template-columns: minmax(240px, 1.2fr) 160px minmax(280px, 1fr) auto;
   gap: 18px;
   align-items: end;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 250, 243, 0.88);
   padding: 22px;
   border-radius: 22px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(27, 26, 22, 0.08);
+  border: 1px solid rgba(31, 27, 22, 0.1);
   backdrop-filter: blur(10px);
 }
 
@@ -121,10 +121,10 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 250, 243, 0.9);
   padding: 20px;
   border-radius: 20px;
-  border: 1px solid rgba(27, 26, 22, 0.12);
+  border: 1px solid rgba(31, 27, 22, 0.12);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(12px);
 }
@@ -202,13 +202,13 @@ input:focus {
   margin-top: 24px;
   padding: 16px 20px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 250, 243, 0.86);
   display: flex;
   justify-content: space-between;
   align-items: center;
   backdrop-filter: blur(10px);
   gap: 16px;
-  border: 1px solid rgba(27, 26, 22, 0.08);
+  border: 1px solid rgba(31, 27, 22, 0.1);
 }
 
 .status-pill {
@@ -264,7 +264,7 @@ input:focus {
   flex-direction: column;
   min-height: 300px;
   animation: fadeInUp 0.6s ease forwards;
-  border: 1px solid rgba(27, 26, 22, 0.08);
+  border: 1px solid rgba(31, 27, 22, 0.1);
 }
 
 .result-card:hover {
@@ -273,7 +273,7 @@ input:focus {
 }
 
 .card-media {
-  background: linear-gradient(135deg, #f7d7c4, #e1efe8);
+  background: linear-gradient(135deg, #f4d2c4, #dfece6);
   min-height: 140px;
   position: relative;
 }
@@ -363,7 +363,7 @@ input:focus {
 }
 
 .chip {
-  background: #f4ede2;
+  background: #f5ede2;
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 0.72rem;
@@ -372,19 +372,19 @@ input:focus {
 }
 
 .chip-youtube {
-  background: #ffe1de;
-  color: #a6120e;
+  background: #ffdcd6;
+  color: #a23b33;
 }
 
 .chip-instagram {
-  background: linear-gradient(135deg, #f7edd1, #f1c4ff);
-  color: #6f1e74;
+  background: linear-gradient(135deg, #f7e8cf, #f1c7f0);
+  color: #6d2a60;
 }
 
 .chip-x,
 .chip-twitter {
-  background: #e4f3f0;
-  color: #0b4b4b;
+  background: #e3f1ee;
+  color: #1d4e45;
 }
 
 .chip-threads {
@@ -399,13 +399,13 @@ input:focus {
 
 .chip-news,
 .chip-web {
-  background: #f0efe7;
-  color: #4a3b2a;
+  background: #efe8dd;
+  color: #5a4634;
 }
 
 .chip-pr {
-  background: #fff2d7;
-  color: #7a4b00;
+  background: #ffefd1;
+  color: #7a4a18;
 }
 
 .modal {
@@ -476,7 +476,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #faf6ef;
+  background: #fdf7ef;
   border-radius: 16px;
   padding: 16px;
   border: 1px solid var(--stroke);
